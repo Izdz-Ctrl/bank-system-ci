@@ -35,5 +35,6 @@ jobs:
       - name: Checkstyle Review
         uses: dbelyaev/action-checkstyle@master
         with:
+          if: always()
           github_token: ${{ secrets.GITHUB_TOKEN }} # Dùng GITHUB_TOKEN viết hoa
           level: warning
