@@ -2,16 +2,15 @@ name: BankSystem CI Automation
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master ] # Chú ý: Dùng master theo đúng tên nhánh của em
   pull_request:
-    branches: [ master ] # Kích hoạt khi có PR vào nhánh main
+    branches: [ master ]
 
 jobs:
   build-and-test:
-    # Cần cấp quyền này để Bot có thể viết bình luận vào Pull Request
     permissions:
       contents: read
-      pull-requests: write
+      pull-requests: write # Quyền này để Bot có thể viết bình luận vào PR
 
     strategy:
       matrix:
@@ -34,8 +33,8 @@ jobs:
         run: mvn clean verify
 
       - name: Checkstyle Review
-        # Con Bot này sẽ tự động soi lỗi và bình luận vào PR
         uses: dbelyaev/action-checkstyle@master
         with:
-          github_token: ${{ secrets.github_token }}
+          if: always()
+          github_token: ${{ secrets.GITHUB_TOKEN }} # Dùng GITHUB_TOKEN viết hoa
           level: warning
