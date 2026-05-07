@@ -1,16 +1,16 @@
-name: BankSystem CI Automation
-
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ] # Trigger khi có Pull Request vào nhánh main
 
 jobs:
   build-and-test:
-    # Cấu hình Matrix Strategy
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-
-    # Sử dụng biến os từ matrix
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
+    # Cần cấp quyền viết bình luận cho con Bot
+    permissions:
+      contents: read
+      pull-requests: write
 
     steps:
       - name: Checkout code
@@ -32,3 +32,9 @@ jobs:
         with:
           name: JaCoCo-Coverage-Report
           path: target/site/jacoco/
+
+      - name: Checkstyle Review
+          uses: dbelyaev/action-checkstyle@master
+          with:
+            github_token: ${{ secrets.github_token }}
+            level: warning
