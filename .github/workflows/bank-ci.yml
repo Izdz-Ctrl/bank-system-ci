@@ -23,5 +23,12 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      - name: Build and Test with Maven
-        run: mvn clean package
+      - name: Build and Verify with JaCoCo
+          run: mvn clean verify
+
+      - name: Upload JaCoCo Coverage Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: JaCoCo-Coverage-Report
+          path: target/site/jacoco/
