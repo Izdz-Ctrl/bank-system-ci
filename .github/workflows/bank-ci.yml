@@ -2,9 +2,9 @@ name: BankSystem CI Automation
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ] # Kích hoạt khi có PR vào nhánh main
+    branches: [ master ] # Kích hoạt khi có PR vào nhánh main
 
 jobs:
   build-and-test:
