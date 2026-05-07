@@ -1,16 +1,23 @@
+name: BankSystem CI Automation
+
 on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ] # Trigger khi có Pull Request vào nhánh main
+    branches: [ main ] # Kích hoạt khi có PR vào nhánh main
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
-    # Cần cấp quyền viết bình luận cho con Bot
+    # Cần cấp quyền này để Bot có thể viết bình luận vào Pull Request
     permissions:
       contents: read
       pull-requests: write
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -26,15 +33,9 @@ jobs:
       - name: Build and Verify with JaCoCo
         run: mvn clean verify
 
-      - name: Upload JaCoCo Coverage Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: JaCoCo-Coverage-Report
-          path: target/site/jacoco/
-
       - name: Checkstyle Review
-          uses: dbelyaev/action-checkstyle@master
-          with:
-            github_token: ${{ secrets.github_token }}
-            level: warning
+        # Con Bot này sẽ tự động soi lỗi và bình luận vào PR
+        uses: dbelyaev/action-checkstyle@master
+        with:
+          github_token: ${{ secrets.github_token }}
+          level: warning
