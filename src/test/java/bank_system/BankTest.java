@@ -10,4 +10,13 @@ public class BankTest {
     Account account = new CheckingAccount(101, 500.0);
     assertEquals(500.0, account.getBalance(), "Số dư khởi tạo phải là 500");
   }
+  @Test
+  public void testFilePathFailure() {
+    // Cố tình dùng dấu gạch chéo ngược kiểu Windows
+    String path = "src\\main\\resources\\data.txt";
+
+    java.io.File file = new java.io.File(path);
+    org.junit.jupiter.api.Assertions.assertTrue(file.getPath().contains("\\"),
+            "Đường dẫn này chỉ đúng trên Windows!");
+  }
 }
